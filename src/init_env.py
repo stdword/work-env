@@ -18,28 +18,7 @@ def get_env_path():
 
 
 def source_starter(env_type, home, bash_folder):
-	mark = 'dw work-env {}'.format(env_type)
-
-	bashrc_path = os.path.join(home, '.bashrc')
-	with open(bashrc_path, 'r+') as f:
-		if f.read().find(mark) == -1:
-			text = indent(
-				text='''
-					## {mark} start
-					if [ -d "{bash_folder}" ]; then
-						for f in `ls {bash_folder}`; do
-							source "{bash_folder}/$f"
-						done
-					fi
-					## {mark} end
-				'''.format(
-					mark=mark,
-					bash_folder=bash_folder
-				),
-				spaces=0,
-				strip=True,
-			)
-			f.write('\n\n' + text + '\n\n')
+	pass
 
 
 def scripts_starter(env_type, home, bash_folder):
