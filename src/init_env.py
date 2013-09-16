@@ -7,7 +7,6 @@ import os
 from fabric.api import local
 from fabric.context_managers import hide
 from fabric.operations import prompt
-from fabric.utils import indent
 
 
 def get_env_path():
