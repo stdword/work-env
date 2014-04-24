@@ -71,7 +71,6 @@ def init_env(env_type, starter):
 
 def main():
 	init_env(env_type='completions', starter=source_starter)
-	init_env(env_type='scripts', starter=scripts_starter)
 	init_env(env_type='configs', starter=configs_starter)
 	init_env(env_type='functions', starter=source_starter)
 	init_env(env_type='aliases', starter=source_starter)
