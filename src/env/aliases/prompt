@@ -4,8 +4,13 @@ GIT_PS1_SHOWSTASHSTATE=true
 
 
 # colorized values
-#hostnamecolor=$(hostname | od | tr ' ' '\n' | awk '{total = total + $1}END{print 30 + (total % 6)}')
-#PS1='\[\e[${hostnamecolor}m\]\]\h\[\e[0m\]\n$ '
+hostnamecolor=$(hostname | od | tr ' ' '\n' | awk '{total = total + $1}END{print 31 + (total % 6)}')
+usercolor=$(uname | od | tr ' ' '\n' | awk '{total = total + $1}END{print 31 + (total % 6)}')
+hostnamecolor=34
+usercolor=35
 
-#PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n$(__git_ps1 "[%s]")\$ '
-PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
+PS1='\[\e[1;${usercolor}m\]\u\[\e[0m\]@\[\e[1;${hostnamecolor}m\]\h\[\e[0m\] \w\n$(__git_ps1 "[%s]")\$ '
+#PS1='\[\e[1;${usercolor}m\]\u\[\e[0m\]@\[\e[1;${hostnamecolor}m\]\h\[\e[0m\] \w\n\$ '
+
+#PS1='\[\e[1;32m\]\u@\h \[\e[1;33m\]\w\[\e[0m\]\n$(__git_ps1 "[%s]")\$ '
+#PS1='\n\[\e[1;32m\]\u@\h \[\e[1;33m\]\w\[\e[0m\]\n\$ '
