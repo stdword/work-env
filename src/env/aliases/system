@@ -27,9 +27,9 @@
 
 
 # Some shortcuts for different directory listings
- alias ls='ls -h --color=tty'                 # classify files in colour
+ alias ls='ls -hF --color=tty'                 # classify files in colour
 # alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
- alias l='ls -F'                               # long list
- alias la='ls -A'                              # all but . and ..
- alias ll='ls -lA'
+ alias l='ls -lF'                               # long list
+ alias la='ls -AF'                              # all but . and ..
+ alias ll='ls -lAF'
