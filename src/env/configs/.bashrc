@@ -1,4 +1,3 @@
-
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
@@ -64,21 +63,21 @@
 
 # User
 
-if [ -d "/home/DWord/.bash_completions" ]; then
-	for f in `ls /home/DWord/.bash_completions`; do
-		source "/home/DWord/.bash_completions/$f"
+if [ -d "$HOME/.bash_completions" ]; then
+	for f in `ls $HOME/.bash_completions --hide=-*`; do
+		source "$HOME/.bash_completions/$f"
 	done
 fi
 
-if [ -d "/home/DWord/.bash_functions" ]; then
-	for f in `ls /home/DWord/.bash_functions`; do
-		source "/home/DWord/.bash_functions/$f"
+if [ -d "$HOME/.bash_functions" ]; then
+	for f in `ls $HOME/.bash_functions --hide=-*`; do
+		source "$HOME/.bash_functions/$f"
 	done
 fi
 
-if [ -d "/home/DWord/.bash_aliases" ]; then
-	for f in `ls /home/DWord/.bash_aliases`; do
-		source "/home/DWord/.bash_aliases/$f"
+if [ -d "$HOME/.bash_aliases" ]; then
+	for f in `ls $HOME/.bash_aliases --hide=-*`; do
+		source "$HOME/.bash_aliases/$f"
 	done
 fi
 
