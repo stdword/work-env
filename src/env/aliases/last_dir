@@ -1,0 +1,6 @@
+export PROMPT_COMMAND='pwd > ~/.last_dir'
+
+# restore last saved path
+if [ -f ~/.last_dir ]
+    then cd `cat ~/.last_dir`
+fi
