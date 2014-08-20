@@ -1,6 +1,7 @@
 export PROMPT_COMMAND='pwd > ~/.last_dir'
 
 # restore last saved path
-if [ -f ~/.last_dir ]
-    then cd `cat ~/.last_dir`
+if [ -f ~/.last_dir ] ; then
+    P=`cat ~/.last_dir`
+    cd "${P}"
 fi
