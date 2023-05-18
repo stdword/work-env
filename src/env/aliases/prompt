@@ -1,16 +1,62 @@
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWSTASHSTATE=true
-#GIT_PS1_SHOWUNTRACKEDFILES=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
 
 
 # colorized values
 hostnamecolor=$(hostname | od | tr ' ' '\n' | awk '{total = total + $1}END{print 31 + (total % 6)}')
 usercolor=$(uname | od | tr ' ' '\n' | awk '{total = total + $1}END{print 31 + (total % 6)}')
-hostnamecolor=34
-usercolor=35
 
-PS1='\[\e[1;${usercolor}m\]\u\[\e[0m\]@\[\e[1;${hostnamecolor}m\]\h\[\e[0m\] \w\n$(__git_ps1 "[%s]")\$ '
-#PS1='\[\e[1;${usercolor}m\]\u\[\e[0m\]@\[\e[1;${hostnamecolor}m\]\h\[\e[0m\] \w\n\$ '
+#PS1='\[\e[1;${usercolor}m\]\u\[\e[0m\]@\[\e[1;${hostnamecolor}m\]\h\[\e[0m\] \[\e[0;${tscolor}m\]$(date +"%d|%H:%M:%S")\[\e[0m\] \w\n$(__git_ps1 "[%s]")\$ '
+#PS1='\[\e[1;${usercolor}m\]\u\[\e[0m\]@\[\e[1;${hostnamecolor}m\]\h\[\e[0m\] \w\n$(__git_ps1 "[%s]")\$ '
 
-#PS1='\[\e[1;32m\]\u@\h \[\e[1;33m\]\w\[\e[0m\]\n$(__git_ps1 "[%s]")\$ '
-#PS1='\n\[\e[1;32m\]\u@\h \[\e[1;33m\]\w\[\e[0m\]\n\$ '
+
+function print_pre_prompt ()
+{
+    local LAST_EXIT_CODE="$?"
+
+    local hostname_color="1;34"
+    local user_color="1;35"
+    local path_color="37"
+    local ts_color="1;30"
+    local env_color="32"
+    local git_color="1;37"
+
+    # copy of last dir feature
+    pwd > ~/.last_dir
+
+    if [ $LAST_EXIT_CODE = 0 ]; then
+        local code_color=""
+    else
+        local code_color="1;31"
+    fi
+
+    printf -v DATE "%(%d|%H:%M:%S)T"
+    printf -v PS1RHS "\e[0m\e[${ts_color}m$DATE\e[0m"
+
+    # Strip ANSI commands before counting length
+    # From: https://www.commandlinefu.com/commands/view/12043/remove-color-special-escape-ansi-codes-from-text-with-sed
+    local PS1RHS_stripped=$(sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" <<<"$PS1RHS")
+
+    # Reference: https://en.wikipedia.org/wiki/ANSI_escape_code
+    local Save='\e[s' # Save cursor position
+    local Rest='\e[u' # Restore cursor to save point
+
+    if [ ! -z "$VIRTUAL_ENV" ] ; then
+        local ENV="`basename \"$VIRTUAL_ENV\"`"
+        ENV="\[\e[${env_color}m\]$ENV\[\e[0m\]"
+        ENV="($ENV) "
+    fi
+
+    local GIT='$(__git_ps1 "[%s]")'
+    #GIT="\[\e[${git_color}m\]$GIT\[\e[0m\]"
+
+    local USER="\[\e[${user_color}m\]\u\[\e[0m\]"
+    local HOST="\[\e[${hostname_color}m\]\h\[\e[0m\]"
+    local PATH="\[\e[${path_color}m\]\w\[\e[0m\]"
+    local PROMPT="\[\e[${code_color}m\]\$ \[\e[0m\]"
+    
+    PS1LHS="$USER@$HOST $ENV$PATH\n$GIT$PROMPT"
+    PS1="\[${Save}\e[${COLUMNS}C\e[${#PS1RHS_stripped}D${PS1RHS}${Rest}\]${PS1LHS}"
+}
+PROMPT_COMMAND=print_pre_prompt
